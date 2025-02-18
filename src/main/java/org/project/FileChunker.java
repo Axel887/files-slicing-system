@@ -17,13 +17,6 @@ public class FileChunker {
     private static final int MIN_CHUNK_SIZE = 1024; // Taille minimale d'un chunk en octets
     private static final int MAX_CHUNK_SIZE = 8192; // Taille maximale d'un chunk en octets
 
-    public static void main(String[] args) throws IOException {
-        // Spécifiez le chemin du fichier en dur
-        String filePath = "C:/Users/houen/OneDrive/Bureau/Work/HETIC/java/files-slicing-system/test.pdf";
-        File file = new File(filePath);
-        new FileChunker().chunkFile(file);
-    }
-
     public void chunkFile(File file) throws IOException {
         // Création d'un polynôme irréductible pour le fingerprinting
         Polynomial poly = Polynomial.createIrreducible(53);

@@ -9,9 +9,7 @@ import java.io.IOException;
 public class FileFingerprintTest {
 
     public static void main(String[] args) {
-        // Spécifiez le chemin du fichier en dur
-        String filePath = "C:/Users/houen/OneDrive/Bureau/Work/HETIC/java/files-slicing-system/test.pdf";
-        File file = new File(filePath);
+        File file = new File(""); // Specify the file path
         Polynomial polynomial = Polynomial.createIrreducible(53); // Use a 53-bit polynomial
         RabinFingerprintLong fingerprinter = new RabinFingerprintLong(polynomial);
 

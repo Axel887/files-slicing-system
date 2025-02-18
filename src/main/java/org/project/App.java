@@ -1,31 +1,26 @@
 package org.project;
 
-import com.google.common.io.ByteStreams;
-import org.rabinfingerprint.fingerprint.RabinFingerprintLong;
-import org.rabinfingerprint.polynomial.Polynomial;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
-  public static void main(String[] args)
-  {
-    Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Entrez le chemin du fichier à découper : ");
+        String filePath = scanner.nextLine();
+        scanner.close();
 
-    // Demande à l'utilisateur d'entrer le chemin du fichier
-    System.out.print("Entrez le chemin du fichier : ");
-    String filePath = scanner.nextLine();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("Erreur : Le fichier spécifié n'existe pas.");
+            return;
+        }
 
-    // Vérification de l'existence du fichier
-    Path path = Paths.get(filePath);
-    if (Files.exists(path)) {
-      System.out.println("Fichier existant : " + filePath);
-    } else {
-      System.out.println("Fichier non trouvé : " + filePath);
+        try {
+            new FileChunker().chunkFile(file);
+        } catch (IOException e) {
+            System.err.println("Erreur lors du découpage du fichier : " + e.getMessage());
+        }
     }
-
-    scanner.close();
-  }
 }
