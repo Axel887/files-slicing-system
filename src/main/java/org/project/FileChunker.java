@@ -1,4 +1,4 @@
-package org.example;
+package org.project;
 
 import org.rabinfingerprint.polynomial.Polynomial;
 import org.rabinfingerprint.fingerprint.RabinFingerprintLongWindowed;
