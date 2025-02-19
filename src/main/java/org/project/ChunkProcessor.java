@@ -33,9 +33,17 @@ public class ChunkProcessor {
             System.out.println("  ○ Taille : " + chunk.length + " bytes");
 
             if (!isDuplicate) {
-                // Compression du chunk
+
+                // compression du chuck avec LZ4
+                // byte[] compressedChunk = compressor.compressChunk(chunk);
+
+                // Compression de chunk avec Zstd
                 byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
                 chunkStorage.storeChunk(chunkHash, compressedChunk);
+
+                // Compression du chunk avec Snappy
+                // byte[] compressedChunk = Snappy.compress(chunk);
+
 
                 // Affichage des tailles
                 System.out.println("  ⚡ Compression appliquée");
