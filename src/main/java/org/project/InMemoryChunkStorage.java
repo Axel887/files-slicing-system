@@ -28,7 +28,7 @@ public class InMemoryChunkStorage implements ChunkStorage {
             String chunkId = entry.getKey();
             byte[] chunkData = entry.getValue();
             System.out.println(
-                    "Chunk (" + chunkNumber + ")" + " : " + chunkId + "; Size: " + chunkData.length + " bytes");
+                    "Chunk (" + chunkNumber + ")" + " : " + chunkId + ", Size: " + chunkData.length + " bytes");
             chunkNumber++;
         }
     }
