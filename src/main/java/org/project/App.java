@@ -34,7 +34,7 @@ public class App {
             try {
                 processor.processFile(file);
 
-                System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) : ");
+                System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) 🖍️: ");
                 String performTest = scanner.nextLine();
                 if (performTest.equalsIgnoreCase("oui")) {
                     try {
