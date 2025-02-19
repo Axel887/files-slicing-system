@@ -18,8 +18,7 @@ public class FileChunker {
     private static final int MAX_CHUNK_SIZE = 8192; // Taille maximale d'un chunk en octets
 
     public void chunkFile(File file) throws IOException {
-        // Création d'un polynôme irréductible pour le fingerprinting
-        Polynomial poly = Polynomial.createIrreducible(53);
+        Polynomial poly = Polynomial.createFromLong(0x3DA3358B4DC173L);
         // Création d'une fenêtre de fingerprinting avec la taille définie
         RabinFingerprintLongWindowed window = new RabinFingerprintLongWindowed(poly, WINDOW_SIZE);
 
