@@ -1,0 +1,92 @@
+[2025-02-18 10:15:32] INFO  - Application started successfully.
+[2025-02-18 10:16:05] DEBUG - Loading configuration from config.yaml
+[2025-02-18 10:16:10] INFO  - Database connection established.
+[2025-02-18 10:16:45] WARN  - Response time exceeded 500ms for request /api/user
+[2025-02-18 10:17:12] ERROR - Failed to process payment: Insufficient funds
+[2025-02-18 10:17:45] DEBUG - Retrying payment transaction...
+[2025-02-18 10:18:15] INFO  - User "john_doe" logged in successfully.
+[2025-02-18 10:18:45] WARN  - Disk space is running low: 5% remaining
+[2025-02-18 10:19:10] ERROR - Unable to send email: SMTP server not responding
+[2025-02-18 10:19:50] INFO  - Scheduled job "backup" completed successfully.
+[2025-02-18 10:20:30] DEBUG - Cache cleared for session "abcd1234"
+[2025-02-18 10:21:00] INFO  - Application shutting down...
+2025-02-19 18:56:53 DEBUG - Database connection established
+2025-02-19 18:56:53 ERROR - File not found
+2025-02-19 18:56:53 DEBUG - Connection timed out
+2025-02-19 18:56:53 ERROR - Error occurred while processing data
+2025-02-19 18:56:53 DEBUG - Error occurred while processing data
+2025-02-19 18:56:53 INFO - User login successful
+2025-02-19 18:56:53 DEBUG - Invalid input detected
+2025-02-19 18:56:53 INFO - Invalid input detected
+2025-02-19 18:56:53 WARN - File not found
+2025-02-19 18:56:53 DEBUG - System shutdown initiated
+2025-02-19 18:56:53 WARN - System shutdown initiated
+2025-02-19 18:56:53 INFO - Connection timed out
+2025-02-19 18:56:53 DEBUG - Application started
+2025-02-19 18:56:53 DEBUG - Database connection established
+2025-02-19 18:56:53 INFO - Data processed successfully
+2025-02-19 18:56:53 DEBUG - Data processed successfully
+2025-02-19 18:56:53 WARN - Database connection established
+2025-02-19 18:56:53 ERROR - Application started
+2025-02-19 18:56:53 INFO - Authentication failed
+2025-02-19 18:56:53 ERROR - Data processed successfully
+2025-02-19 18:56:53 INFO - Authentication failed
+2025-02-19 18:56:53 INFO - System shutdown initiated
+2025-02-19 18:56:53 ERROR - File not found
+2025-02-19 18:56:53 INFO - Data processed successfully
+2025-02-19 18:56:53 INFO - Error occurred while processing data
+2025-02-19 18:56:53 INFO - Application started
+2025-02-19 18:56:53 ERROR - Error occurred while processing data
+2025-02-19 18:56:53 ERROR - Connection timed out
+2025-02-19 18:56:53 INFO - Error occurred while processing data
+2025-02-19 18:56:53 INFO - User login successful
+2025-02-19 18:56:53 ERROR - Authentication failed
+2025-02-19 18:56:53 ERROR - Database connection established
+2025-02-19 18:56:53 DEBUG - User login successful
+2025-02-19 18:56:53 WARN - Invalid input detected
+2025-02-19 18:56:53 DEBUG - Database connection established
+2025-02-19 18:56:53 WARN - Database connection established
+2025-02-19 18:56:53 DEBUG - File not found
+2025-02-19 18:56:53 DEBUG - System shutdown initiated
+2025-02-19 18:56:53 DEBUG - Error occurred while processing data
+2025-02-19 18:56:53 WARN - Data processed successfully
+2025-02-19 18:56:53 INFO - Data processed successfully
+2025-02-19 18:56:53 WARN - Data processed successfully
+2025-02-19 18:56:53 INFO - Invalid input detected
+2025-02-19 18:56:53 WARN - Data processed successfully
+2025-02-19 18:56:53 WARN - File not found
+2025-02-19 18:56:53 INFO - Authentication failed
+2025-02-19 18:56:53 WARN - Invalid input detected
+2025-02-19 18:56:53 ERROR - Authentication failed
+2025-02-19 18:56:53 WARN - System shutdown initiated
+2025-02-19 18:56:53 INFO - Invalid input detected
+2025-02-19 18:56:53 DEBUG - Invalid input detected
+2025-02-19 18:56:53 INFO - User login successful
+2025-02-19 18:56:53 INFO - User login successful
+2025-02-19 18:56:53 ERROR - Invalid input detected
+2025-02-19 18:56:53 INFO - Database connection established
+2025-02-19 18:56:53 WARN - File not found
+2025-02-19 18:56:53 WARN - User login successful
+2025-02-19 18:56:53 WARN - System shutdown initiated
+2025-02-19 18:56:53 ERROR - File not found
+2025-02-19 18:56:53 WARN - Application started
+2025-02-19 18:56:53 DEBUG - Invalid input detected
+2025-02-19 18:56:53 INFO - Connection timed out
+2025-02-19 18:56:53 ERROR - System shutdown initiated
+2025-02-19 18:56:53 WARN - File not found
+2025-02-19 18:56:53 DEBUG - System shutdown initiated
+2025-02-19 18:56:53 INFO - Database connection established
+2025-02-19 18:56:53 DEBUG - Invalid input detected
+2025-02-19 18:56:53 INFO - Authentication failed
+2025-02-19 18:56:53 ERROR - Authentication failed
+2025-02-19 18:56:53 DEBUG - User login successful
+2025-02-19 18:56:53 INFO - Application started
+2025-02-19 18:56:53 INFO - Connection timed out
+2025-02-19 18:56:53 ERROR - Invalid input detected
+2025-02-19 18:56:53 ERROR - Data processed successfully
+2025-02-19 18:56:53 ERROR - System shutdown initiated
+2025-02-19 18:56:53 ERROR - Data processed successfully
+2025-02-19 18:56:53 ERROR - Error occurred while processing data
+2025-02-19 18:56:53 WARN - Invalid input detected
+2025-02-19 18:56:53 INFO - Data processed successfully
+2025-02-19 18:56:53 DEBUG - System shutdown initiated
