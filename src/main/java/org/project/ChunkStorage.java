@@ -9,7 +9,5 @@ public interface ChunkStorage {
 
     boolean contains(String chunkId);
 
-    void displayChunks();
-
     Set<String> getAllChunkIds();
 }
