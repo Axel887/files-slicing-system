@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         boolean closeProgram = false;
-        ChunkStorage storage = new InMemoryChunkStorage();
+        InMemoryChunkStorage storage = new InMemoryChunkStorage();
         FileChunker chunker = new FileChunker(storage);
         Scanner scanner;
 
@@ -24,6 +24,7 @@ public class App {
 
             try {
                 chunker.chunkFile(file);
+                storage.displayChunks(); // Affiche les chunks stockés
             } catch (IOException e) {
                 System.err.println("Erreur lors du découpage du fichier : " + e.getMessage());
             }

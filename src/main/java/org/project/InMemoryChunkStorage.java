@@ -21,4 +21,12 @@ public class InMemoryChunkStorage implements ChunkStorage {
     public boolean contains(String chunkId) {
         return storage.containsKey(chunkId);
     }
+
+    public void displayChunks() {
+        for (Map.Entry<String, byte[]> entry : storage.entrySet()) {
+            String chunkId = entry.getKey();
+            byte[] chunkData = entry.getValue();
+            System.out.println("Chunk ID: " + chunkId + ", Size: " + chunkData.length + " bytes");
+        }
+    }
 }
