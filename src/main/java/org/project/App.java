@@ -10,12 +10,14 @@ public class App {
         InMemoryChunkStorage storage = new InMemoryChunkStorage();
         FileChunker chunker = new FileChunker();
         ChunkProcessor processor = new ChunkProcessor(storage, chunker);
+        CompressionPerformanceTest performanceTest = new CompressionPerformanceTest();
         Scanner scanner;
+        String filePath;
 
         do {
             scanner = new Scanner(System.in);
             System.out.print("Entrez le chemin du fichier à découper : ");
-            String filePath = scanner.nextLine();
+            filePath = scanner.nextLine();
 
             File file = new File(filePath);
             if (!file.exists()) {
@@ -25,6 +27,18 @@ public class App {
 
             try {
                 processor.processFile(file);
+
+                // System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) : ");
+                // String performTest = scanner.nextLine();
+                // if (performTest.equalsIgnoreCase("oui")) {
+                //     try {
+                //         performanceTest.runTest(file);
+                //     } catch (IOException e) {
+                //         System.err.println("Erreur lors du test de performance : " + e.getMessage());
+                //     }
+                //     return;
+                // }
+
             } catch (IOException e) {
                 System.err.println("Erreur lors du découpage du fichier : " + e.getMessage());
             }

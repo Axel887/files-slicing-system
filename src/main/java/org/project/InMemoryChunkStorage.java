@@ -2,6 +2,7 @@ package org.project;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class InMemoryChunkStorage implements ChunkStorage {
     private final Map<String, byte[]> storage = new HashMap<>();
@@ -31,5 +32,9 @@ public class InMemoryChunkStorage implements ChunkStorage {
                     "Chunk (" + chunkNumber + ")" + " : " + chunkId + ", Size: " + chunkData.length + " bytes");
             chunkNumber++;
         }
+    }
+
+    public Set<String> getAllChunkIds() {
+        return storage.keySet();
     }
 }
