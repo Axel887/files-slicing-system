@@ -40,8 +40,12 @@ public class FileChunker {
                 // atteinte
                 if ((fingerprint & MASK) == 0 || chunkBuffer.size() >= MAX_CHUNK_SIZE) {
                     byte[] chunk = chunkBuffer.toByteArray();
+
+                    // Calcul du Hash BLAKE3
+                    String hash = Blake3Hasher.hashChunk(chunk);
+
                     System.out.println("Chunk " + (++chunkCount) + " (" + chunk.length + " octets) - fingerprint: "
-                            + Long.toString(fingerprint, 16));
+                            + Long.toString(fingerprint, 16) + " - Hash: " + hash);
                     chunkBuffer.reset();
                 }
             }
@@ -49,8 +53,13 @@ public class FileChunker {
         // Traitement du dernier chunk, s'il reste des données
         if (chunkBuffer.size() > 0) {
             long fingerprint = window.getFingerprintLong();
-            System.out.println("Chunk final " + (++chunkCount) + " (" + chunkBuffer.size() + " octets) - fingerprint: "
-                    + Long.toString(fingerprint, 16));
+            byte[] chunk = chunkBuffer.toByteArray();
+
+            // Calcul du hash pour le  dernier chunk
+            String hash = Blake3Hasher.hashChunk(chunk);
+            System.out.println("Chunk final " + (++chunkCount) + " (" + chunk.length + " octets) - fingerprint: "
+                    + Long.toString(fingerprint, 16) + " - Hash: " + hash);
+
         }
     }
 }
