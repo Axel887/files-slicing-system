@@ -37,9 +37,6 @@ public class FileChunker {
                 if ((fingerprint & MASK) == 0 || chunkBuffer.size() >= MAX_CHUNK_SIZE) {
                     byte[] chunk = chunkBuffer.toByteArray();
                     chunks.add(chunk);
-
-                    System.out.println("Chunk " + (++chunkCount) + " (" + chunk.length + " octets) - fingerprint: "
-                            + Long.toString(fingerprint, 16));
                     chunkBuffer.reset();
                 }
             }
@@ -49,9 +46,6 @@ public class FileChunker {
             long fingerprint = window.getFingerprintLong();
             byte[] chunk = chunkBuffer.toByteArray();
             chunks.add(chunk);
-
-            System.out.println("Chunk final " + (++chunkCount) + " (" + chunk.length + " octets) - fingerprint: "
-                    + Long.toString(fingerprint, 16));
 
         }
 
