@@ -3,6 +3,7 @@ package org.project;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import org.xerial.snappy.Snappy;
 
 public class ChunkProcessor {
     private final ChunkStorage chunkStorage;
@@ -15,19 +16,34 @@ public class ChunkProcessor {
 
     public void processFile(File file) throws IOException {
         List<byte[]> chunks = fileChunker.getChunks(file);
-        int chunkCount = 0;
+        int chunkCount = 1;
 
         for (byte[] chunk : chunks) {
-            // String chunkId = Integer.toString(chunkCount);
             String chunkHash = Blake3Hasher.hashChunk(chunk);
+
             if (!chunkStorage.contains(chunkHash)) {
-                chunkStorage.storeChunk(chunkHash, chunk);
+                displayChunk(chunkCount, chunkHash, chunk);
+
+                // Compression du chunk avec Snappy
+                byte[] compressedChunk = Snappy.compress(chunk);
+
+                // Stocker le chunk compressé
+                chunkStorage.storeChunk(chunkHash, compressedChunk);
+
+                // Affichage des tailles
+                System.out.println("Chunk #" + chunkCount + " info taille original et compressé :");
+                System.out.println("  - Taille originale : " + chunk.length + " bytes");
+                System.out.println("  - Taille compressée : " + compressedChunk.length + " bytes");
             } else {
-                System.out.println("Chunk dupliqué détecté : " + chunkHash);
+                System.out.println("Chunk #" + chunkCount + " déjà existant (doublon détecté).");
             }
+
             chunkCount++;
         }
+    }
 
-        chunkStorage.displayChunks();
+    private void displayChunk(int chunkNumber, String chunkId, byte[] chunkData) {
+        System.out.println(
+                "Chunk (" + chunkNumber + ")" + " : " + chunkId + ", Size: " + chunkData.length + " bytes");
     }
 }
