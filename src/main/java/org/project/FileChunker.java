@@ -16,6 +16,11 @@ public class FileChunker {
     private static final int MASK = 0xFFF; // Condition de découpe : fingerprint & MASK == 0
     private static final int MIN_CHUNK_SIZE = 1024; // Taille minimale d'un chunk en octets
     private static final int MAX_CHUNK_SIZE = 8192; // Taille maximale d'un chunk en octets
+    private final ChunkStorage chunkStorage;
+
+    public FileChunker(ChunkStorage storage) {
+        this.chunkStorage = storage;
+    }
 
     public void chunkFile(File file) throws IOException {
         Polynomial poly = Polynomial.createFromLong(0x3DA3358B4DC173L);
@@ -40,9 +45,28 @@ public class FileChunker {
                 // atteinte
                 if ((fingerprint & MASK) == 0 || chunkBuffer.size() >= MAX_CHUNK_SIZE) {
                     byte[] chunk = chunkBuffer.toByteArray();
+
+                    /*
+                     * 
+                     * Calcul de l'empreinte SHA-256 pour indexer le chunk a implementer ici par
+                     * axel
+                     * 
+                     */
+
+                    // pour l'instant j'utilise un hash tempraire qui est le meme
+
+                    String chunkId = Integer.toString(chunkCount);
+
                     System.out.println("Chunk " + (++chunkCount) + " (" + chunk.length + " octets) - fingerprint: "
-                            + Long.toString(fingerprint, 16));
+                            + Long.toString(fingerprint, 16) +
+                            " - hash: " + chunkId);
                     chunkBuffer.reset();
+
+                    if (!chunkStorage.contains(chunkId)) {
+                        chunkStorage.storeChunk(chunkId, chunk);
+                    } else {
+                        System.out.println("Chunk dupliqué détecté : " + chunkId);
+                    }
                 }
             }
         }
@@ -53,4 +77,5 @@ public class FileChunker {
                     + Long.toString(fingerprint, 16));
         }
     }
+
 }

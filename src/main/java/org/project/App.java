@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         boolean closeProgram = false;
-        FileChunker fileChunker = new FileChunker();
+        ChunkStorage storage = new InMemoryChunkStorage();
+        FileChunker chunker = new FileChunker(storage);
         Scanner scanner;
 
         do {
@@ -22,12 +23,11 @@ public class App {
             }
 
             try {
-                fileChunker.chunkFile(file);
+                chunker.chunkFile(file);
             } catch (IOException e) {
                 System.err.println("Erreur lors du découpage du fichier : " + e.getMessage());
             }
 
-            scanner = new Scanner(System.in);
             System.out.print("Continuer (1) ou stopper (tous caracteres) : ");
             String choiceValue = scanner.nextLine();
 
@@ -36,6 +36,6 @@ public class App {
             }
         } while (!closeProgram);
 
-    scanner.close();
-  }
+        scanner.close();
+    }
 }
