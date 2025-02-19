@@ -30,7 +30,7 @@ public class ChunkProcessor {
                 // byte[] compressedChunk = compressor.compressChunk(chunk);
               
                 // Compression de chunk avec Zstd
-                // byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
+                 byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
               
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
