@@ -1,0 +1,18 @@
+test
+
+C:/Users/houen/OneDrive/Bureau/Work/HETIC/java/files-slicing-system/test.pdf
+
+
+
+
+   for (byte[] chunk : chunks) {
+            byte[] compressedChunk = compressor.compressChunk(chunk);
+            String chunkHash = FileChunker.getSHA256Hash(compressedChunk);
+            if (!chunkStorage.contains(chunkHash)) {
+                // chunkStorage.storeChunk(chunkHash, compressedChunk);
+            } else {
+                System.out.println("Chunk dupliqué détecté : " + chunkHash);
+            }
+            System.out.println("Chunk " + (chunkCount + 1) + ": Original Size: " + chunk.length + " bytes, Compressed Size: " + compressedChunk.length + " bytes, Hash: " + chunkHash);
+            chunkCount++;
+        }
