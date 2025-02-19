@@ -7,6 +7,7 @@ import org.xerial.snappy.Snappy;
 
 public class ChunkProcessor {
     private final ChunkStorage chunkStorage;
+    private final LZ4ChunkCompressor compressor = new LZ4ChunkCompressor();
     private final FileChunker fileChunker;
 
     public ChunkProcessor(ChunkStorage chunkStorage, FileChunker fileChunker) {
@@ -17,7 +18,6 @@ public class ChunkProcessor {
     public void processFile(File file) throws IOException {
         List<byte[]> chunks = fileChunker.getChunks(file);
         int chunkCount = 1;
-
         for (byte[] chunk : chunks) {
             String chunkHash = Blake3Hasher.hashChunk(chunk);
 
@@ -25,7 +25,10 @@ public class ChunkProcessor {
                 displayChunk(chunkCount, chunkHash, chunk);
 
                 // Compression du chunk avec Snappy
-                byte[] compressedChunk = Snappy.compress(chunk);
+                // byte[] compressedChunk = Snappy.compress(chunk);
+                // compression du chuck avec LZ4
+                byte[] compressedChunk = compressor.compressChunk(chunk);
+
 
                 // Stocker le chunk compressé
                 chunkStorage.storeChunk(chunkHash, compressedChunk);
