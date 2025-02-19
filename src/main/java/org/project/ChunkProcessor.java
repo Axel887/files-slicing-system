@@ -26,9 +26,9 @@ public class ChunkProcessor {
 
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
-
                 // compression du chuck avec LZ4
                 byte[] compressedChunk = compressor.compressChunk(chunk);
+
 
                 // Stocker le chunk compressé
                 chunkStorage.storeChunk(chunkHash, compressedChunk);
