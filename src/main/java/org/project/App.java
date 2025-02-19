@@ -28,16 +28,16 @@ public class App {
             try {
                 processor.processFile(file);
 
-                // System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) : ");
-                // String performTest = scanner.nextLine();
-                // if (performTest.equalsIgnoreCase("oui")) {
-                //     try {
-                //         performanceTest.runTest(file);
-                //     } catch (IOException e) {
-                //         System.err.println("Erreur lors du test de performance : " + e.getMessage());
-                //     }
-                //     return;
-                // }
+                System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) : ");
+                String performTest = scanner.nextLine();
+                if (performTest.equalsIgnoreCase("oui")) {
+                    try {
+                        performanceTest.runTest(file);
+                    } catch (IOException e) {
+                        System.err.println("Erreur lors du test de performance : " + e.getMessage());
+                    }
+                    return;
+                }
 
             } catch (IOException e) {
                 System.err.println("Erreur lors du découpage du fichier : " + e.getMessage());
