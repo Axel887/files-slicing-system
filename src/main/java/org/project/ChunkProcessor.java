@@ -18,11 +18,12 @@ public class ChunkProcessor {
         int chunkCount = 0;
 
         for (byte[] chunk : chunks) {
-            String chunkId = Integer.toString(chunkCount);
-            if (!chunkStorage.contains(chunkId)) {
-                chunkStorage.storeChunk(chunkId, chunk);
+            // String chunkId = Integer.toString(chunkCount);
+            String chunkHash = Blake3Hasher.hashChunk(chunk);
+            if (!chunkStorage.contains(chunkHash)) {
+                chunkStorage.storeChunk(chunkHash, chunk);
             } else {
-                System.out.println("Chunk dupliqué détecté : " + chunkId);
+                System.out.println("Chunk dupliqué détecté : " + chunkHash);
             }
             chunkCount++;
         }
