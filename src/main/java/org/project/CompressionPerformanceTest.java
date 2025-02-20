@@ -14,7 +14,8 @@ public class CompressionPerformanceTest {
 
         public void runTest(File file) throws IOException {
                 byte[] fileData = Files.readAllBytes(file.toPath());
-                int  compressedChunkSize = getSizeCompressedChunks(file);
+                ChunkProcessor processor = new ChunkProcessor(storage, chunker);
+
                 // Compression globale
                 long startGlobal = System.nanoTime();
                 byte[] compressedGlobal = compressor.compressChunk(fileData);
@@ -22,8 +23,11 @@ public class CompressionPerformanceTest {
                 System.out.println("Compression globale : " + (endGlobal - startGlobal) / 1e6 + " ms, taille : "
                                 + compressedGlobal.length + " octets");
 
-                long startChunks = System.nanoTime();
                 List<byte[]> chunks = fileChunker.getChunks(file);
+                int  compressedChunkSize = getSizeCompressedChunks(chunks);
+
+                long startChunks = System.nanoTime();
+                processor.compressChunks(chunks);
                 long endChunks = System.nanoTime();
 
                 int totalChunkSize = chunks.stream().mapToInt(chunk -> chunk.length).sum();
@@ -34,21 +38,12 @@ public class CompressionPerformanceTest {
                                                 + " octets");
         }
 
-        private int getSizeCompressedChunks(File file) throws IOException {
-                List<byte[]> chunks = fileChunker.getChunks(file);
+        private int getSizeCompressedChunks(List<byte[]> chunks) throws IOException {
                 int compressedChunkSize = 0;
 
                 for (byte[] chunk : chunks) {
-                        // compression du chuck avec LZ4
-                        // byte[] compressedChunk = compressor.compressChunk(chunk);
-
-                        // Compression de chunk avec Zstd
                         byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
                         compressedChunkSize += compressedChunk.length;
-
-                        // Compression du chunk avec Snappy
-                        // byte[] compressedChunk = Snappy.compress(chunk);
-
                 }
 
                 return compressedChunkSize;
