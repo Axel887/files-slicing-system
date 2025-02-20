@@ -39,7 +39,7 @@ public class ChunkProcessor {
 
                 // Compression de chunk avec Zstd
                 // byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
-                // chunkStorage.storeChunk(chunkHash, compressedChunk);
+                chunkStorage.storeChunk(chunkHash, compressedChunk);
 
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
@@ -56,5 +56,17 @@ public class ChunkProcessor {
         }
 
         System.out.println((chunkCount - 1) + " chunks analysés.");
+    }
+
+    public void compressChunks(List<byte[]> chunks) {
+        for (byte[] chunk : chunks) {
+            String chunkHash = Blake3Hasher.hashChunk(chunk);
+            boolean isDuplicate = chunkStorage.contains(chunkHash);
+
+            if (!isDuplicate) {
+                byte[] compressedChunk = compressor.compressChunk(chunk);
+                chunkStorage.storeChunk(chunkHash, compressedChunk);
+            }
+        }
     }
 }
