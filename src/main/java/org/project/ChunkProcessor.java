@@ -44,7 +44,6 @@ public class ChunkProcessor {
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
 
-
                 // Affichage des tailles
                 System.out.println("  ⚡ Compression appliquée");
                 System.out.println(" ⚡️ Taille compressée : " + compressedChunk.length + " bytes");
