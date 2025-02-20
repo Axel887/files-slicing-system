@@ -15,6 +15,8 @@ public class CompressionPerformanceTest {
         public void runTest(File file) throws IOException {
                 byte[] fileData = Files.readAllBytes(file.toPath());
                 int  compressedChunkSize = getSizeCompressedChunks(file);
+                ChunkProcessor processor = new ChunkProcessor(storage, chunker);
+
                 // Compression globale
                 long startGlobal = System.nanoTime();
                 byte[] compressedGlobal = compressor.compressChunk(fileData);
@@ -23,10 +25,9 @@ public class CompressionPerformanceTest {
                                 + compressedGlobal.length + " octets");
 
                 long startChunks = System.nanoTime();
-                List<byte[]> chunks = fileChunker.getChunks(file);
+                processor.processFile(file, true);
                 long endChunks = System.nanoTime();
 
-                int totalChunkSize = chunks.stream().mapToInt(chunk -> chunk.length).sum();
                 long chunkTimeMs = (endChunks - startChunks) / 1_000_000;
 
                 System.out.println(

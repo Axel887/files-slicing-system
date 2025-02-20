@@ -32,7 +32,7 @@ public class App {
             System.out.println("🏁 Début du découpage...\n");
 
             try {
-                processor.processFile(file);
+                processor.processFile(file, false);
 
                 System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) 🖍️: ");
                 String performTest = scanner.nextLine();

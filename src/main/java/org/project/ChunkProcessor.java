@@ -16,10 +16,12 @@ public class ChunkProcessor {
         this.fileChunker = fileChunker;
     }
 
-    public void processFile(File file) throws IOException {
-        System.out.println("\n=========================================");
-        System.out.println(" 📂 Traitement du fichier : " + file.getName());
-        System.out.println("=========================================\n");
+    public void processFile(File file, boolean isPerfomanceMode) throws IOException {
+        if (!isPerfomanceMode) {
+            System.out.println("\n=========================================");
+            System.out.println(" 📂 Traitement du fichier : " + file.getName());
+            System.out.println("=========================================\n");
+        }
 
         List<byte[]> chunks = fileChunker.getChunks(file);
         int chunkCount = 1;
@@ -28,9 +30,11 @@ public class ChunkProcessor {
             String chunkHash = Blake3Hasher.hashChunk(chunk);
             boolean isDuplicate = chunkStorage.contains(chunkHash);
 
-            System.out.println("📦 Chunk " + chunkCount);
-            System.out.println("  ○ Hash   : " + chunkHash);
-            System.out.println("  ○ Taille : " + chunk.length + " bytes");
+            if (!isPerfomanceMode) {
+                System.out.println("📦 Chunk " + chunkCount);
+                System.out.println("  ○ Hash   : " + chunkHash);
+                System.out.println("  ○ Taille : " + chunk.length + " bytes");
+            }
 
             if (!isDuplicate) {
 
@@ -44,14 +48,21 @@ public class ChunkProcessor {
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
 
-                // Affichage des tailles
-                System.out.println("  ⚡ Compression appliquée");
-                System.out.println(" ⚡️ Taille compressée : " + compressedChunk.length + " bytes");
+                if (!isPerfomanceMode) {
+                    // Affichage des tailles
+                    System.out.println("  ⚡ Compression appliquée");
+                    System.out.println(" ⚡️ Taille compressée : " + compressedChunk.length + " bytes");
+                }
             } else {
-                System.out.println(" ‼️ Chunk déjà existant (doublon détecté)");
+                if (!isPerfomanceMode) {
+                    System.out.println(" ‼️ Chunk déjà existant (doublon détecté)");
+                }
             }
 
-            System.out.println("-----------------------------------------\n");
+            if (!isPerfomanceMode) {
+                System.out.println("-----------------------------------------\n");
+            }
+
             chunkCount++;
         }
 
