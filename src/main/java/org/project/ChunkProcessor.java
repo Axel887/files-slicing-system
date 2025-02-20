@@ -35,11 +35,11 @@ public class ChunkProcessor {
             if (!isDuplicate) {
 
                 // compression du chuck avec LZ4
-                // byte[] compressedChunk = compressor.compressChunk(chunk);
+                 byte[] compressedChunk = compressor.compressChunk(chunk);
 
                 // Compression de chunk avec Zstd
-                byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
-                chunkStorage.storeChunk(chunkHash, compressedChunk);
+                // byte[] compressedChunk = ZstdCompressor.compressChunk(chunk);
+                // chunkStorage.storeChunk(chunkHash, compressedChunk);
 
                 // Compression du chunk avec Snappy
                 // byte[] compressedChunk = Snappy.compress(chunk);
