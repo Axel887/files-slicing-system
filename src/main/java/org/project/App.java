@@ -42,7 +42,7 @@ public class App {
                     } catch (IOException e) {
                         System.err.println("Erreur lors du test de performance : " + e.getMessage());
                     }
-                    return;
+
                 }
 
                 System.out.println("\n✅ Découpage terminé avec succès !");
@@ -50,10 +50,10 @@ public class App {
                 System.err.println("\n❌ Erreur lors du découpage du fichier : " + e.getMessage());
             }
 
-            System.out.print("\n🔁 Voulez-vous traiter un autre fichier ? (1 = Oui, autre = Non) : ");
+            System.out.print("\n🔁 Voulez-vous traiter un autre fichier ? (oui/non) : ");
             String choiceValue = scanner.nextLine();
 
-            if (!choiceValue.equals("1")) {
+            if (!choiceValue.equals("oui")) {
                 closeProgram = true;
                 System.out.println("\n🙋🏾 Chunk... chunk... programme terminé!");
             }
