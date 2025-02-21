@@ -71,6 +71,9 @@ public class ProgramController {
                 }
                 return;
             }
+            if( performTest.equalsIgnoreCase( "non")) {
+                return;
+            }
             System.out.println("❌ Entrée invalide. Veuillez répondre par 'oui' ou 'non'.");
         }
     }

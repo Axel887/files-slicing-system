@@ -37,7 +37,6 @@ public class ChunkProcessor {
     private void processChunk(byte[] chunk, int chunkCount) {
         String chunkHash = Blake3Hasher.hashChunk(chunk);
         boolean isDuplicate = chunkStorage.contains(chunkHash);
-        System.out.println(chunk);
         System.out.println("📦 Chunk " + chunkCount);
         System.out.println("  ○ Hash   : " + chunkHash);
         System.out.println("  ○ Taille : " + chunk.length + " bytes");
