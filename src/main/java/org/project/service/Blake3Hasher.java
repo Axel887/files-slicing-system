@@ -1,4 +1,4 @@
-package org.project;
+package org.project.service;
 
 import org.bouncycastle.crypto.digests.Blake3Digest;
 

@@ -1,9 +1,9 @@
 package org.project.controller;
 
-import org.project.ChunkProcessor;
-import org.project.CompressionPerformanceTest;
-import org.project.FileChunker;
-import org.project.InMemoryChunkStorage;
+import org.project.service.ChunkProcessor;
+import org.project.performance.CompressionPerformanceTest;
+import org.project.service.FileChunker;
+import org.project.storage.InMemoryChunkStorage;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +11,15 @@ import java.util.Scanner;
 
 public class ProgramController {
     private final Scanner scanner;
-    private final InMemoryChunkStorage storage;
-    private final FileChunker chunker;
     private final ChunkProcessor processor;
     private final CompressionPerformanceTest performanceTest;
 
     public ProgramController() {
+        InMemoryChunkStorage storage = new InMemoryChunkStorage();
+        FileChunker fileChunker = new FileChunker();
         this.scanner = new Scanner(System.in);
-        this.storage = new InMemoryChunkStorage();
-        this.chunker = new FileChunker();
-        this.processor = new ChunkProcessor(storage, chunker);
-        this.performanceTest = new CompressionPerformanceTest();
+        this.processor = new ChunkProcessor(storage, fileChunker);
+        this.performanceTest = new CompressionPerformanceTest(processor);
     }
 
     public void start() {
@@ -54,20 +52,26 @@ public class ProgramController {
 
         try {
             processor.processFile(file);
-
-            System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) 🖍️: ");
-            String performTest = scanner.nextLine();
-            if (performTest.equalsIgnoreCase("oui")) {
-                try {
-                    performanceTest.runPerformTestFile(file);
-                } catch (IOException e) {
-                    System.err.println("Erreur lors du test de performance : " + e.getMessage());
-                }
-            }
-
+            askTestPerformanceFile(file);
             System.out.println("\n✅ Découpage terminé avec succès !");
         } catch (IOException e) {
             System.err.println("\n❌ Erreur lors du découpage du fichier : " + e.getMessage());
+        }
+    }
+
+    private void askTestPerformanceFile(File file) {
+        while (true) {
+            System.out.print("Voulez-vous effectuer un test de performance ? (oui/non) 🖍️: ");
+            String performTest = scanner.nextLine().trim().toLowerCase();
+            if (performTest.equalsIgnoreCase("oui")) {
+                try {
+                    performanceTest.runPerformanceTestFile(file);
+                } catch (IOException e) {
+                    System.err.println("Erreur lors du test de performance : " + e.getMessage());
+                }
+                return;
+            }
+            System.out.println("❌ Entrée invalide. Veuillez répondre par 'oui' ou 'non'.");
         }
     }
 
@@ -78,12 +82,12 @@ public class ProgramController {
 
             if (choiceValue.equals("oui")) {
                 return false;
-            } else if (choiceValue.equals("non")) {
+            }
+            if (choiceValue.equals("non")) {
                 System.out.println("Programme terminé !");
                 return true;
-            } else {
-                System.out.println("❌ Entrée invalide. Veuillez répondre par 'oui' ou 'non'.");
             }
+            System.out.println("❌ Entrée invalide. Veuillez répondre par 'oui' ou 'non'.");
         }
     }
 }

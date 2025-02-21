@@ -1,4 +1,4 @@
-package org.project;
+package org.project.storage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,6 @@ public class InMemoryChunkStorage implements ChunkStorage {
 
     @Override
     public void storeChunk(String chunkId, byte[] chunkData) {
-        // On stocke le chunk s’il n’existe pas déjà
         storage.putIfAbsent(chunkId, chunkData);
     }
 
@@ -23,7 +22,18 @@ public class InMemoryChunkStorage implements ChunkStorage {
         return storage.containsKey(chunkId);
     }
 
+    @Override
     public Set<String> getAllChunkIds() {
         return storage.keySet();
+    }
+
+    @Override
+    public void removeChunk(String chunkId) {
+        storage.remove(chunkId);
+    }
+
+    @Override
+    public byte[][] getAllChunks() {
+        return storage.values().toArray(new byte[0][]);
     }
 }
