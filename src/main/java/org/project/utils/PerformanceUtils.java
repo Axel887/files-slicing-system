@@ -1,7 +1,8 @@
-package org.project.performance.utils;
+package org.project.utils;
 
 import org.project.service.ChunkProcessor;
 import org.project.service.FileChunker;
+import org.project.service.FileReconstructor;
 import org.project.storage.ChunkStorage;
 import org.project.service.Compressor;
 
@@ -16,6 +17,7 @@ public class PerformanceUtils {
     private final FileChunker fileChunker;
     private final File file;
     private final Compressor compressor;
+    private final FileReconstructor fileReconstructor;
 
     public PerformanceUtils(ChunkProcessor processor, File file) throws IOException {
         this.fileChunker = new FileChunker();
@@ -23,6 +25,7 @@ public class PerformanceUtils {
         this.fileData = Files.readAllBytes(file.toPath());
         this.file = file;
         this.compressor = new Compressor();
+        this.fileReconstructor = new FileReconstructor();
     }
 
     public void compareCompressionPerformance() throws IOException {
@@ -49,7 +52,7 @@ public class PerformanceUtils {
 
         // 🔹 Décompression des chunks
         long startTimeDecompressionChunks = System.nanoTime();
-        this.decompressChunks(chunkStorage);
+        this.fileReconstructor.reconstructFile("reconstructFile");
         long endTimeDecompressionChunks = System.nanoTime();
 
         // 🔹 Calcul des tailles
