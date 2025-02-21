@@ -52,7 +52,7 @@ public class PerformanceUtils {
 
         // 🔹 Décompression des chunks
         long startTimeDecompressionChunks = System.nanoTime();
-        this.fileReconstructor.reconstructFile("reconstructFile");
+        this.fileReconstructor.reconstructFile();
         long endTimeDecompressionChunks = System.nanoTime();
 
         // 🔹 Calcul des tailles

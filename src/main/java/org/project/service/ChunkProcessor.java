@@ -5,6 +5,7 @@ import org.project.storage.ChunkStorage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.Base64;
 
 public class ChunkProcessor {
     private final ChunkStorage chunkStorage;
@@ -22,57 +23,82 @@ public class ChunkProcessor {
         System.out.println(" 📂 Traitement du fichier : " + file.getName());
         System.out.println("=========================================\n");
 
-        List<byte[]> chunks = fileChunker.getChunks(file);
-        Map<String, String> chunkMapping = new LinkedHashMap<>(); // Stocke les chunks uniques
-        List<String> chunkSequence = new ArrayList<>(); // Stocke l'ordre des hashes pour la reconstruction
+        // Récupérer l'extension du fichier d'origine
+        String extension = "";
+        int lastDotIndex = file.getName().lastIndexOf(".");
+        if (lastDotIndex != -1) {
+            extension = file.getName().substring(lastDotIndex); // Inclut le point (ex: ".png")
+        }
 
+        // 🔹 Charger tous les chunks existants depuis `chunks.json`
+        Map<String, String> chunkMapping = JsonUtils.readFromJsonFile("chunks.json", Map.class);
+        if (chunkMapping == null) {
+            chunkMapping = new LinkedHashMap<>();
+        }
+        System.out.println("📄 chunks.json chargé : " + chunkMapping.size() + " chunks uniques existants.");
+
+        // 🔹 Créer une liste pour la séquence des chunks du fichier en cours (`result.json`)
+        List<String> chunkSequence = new ArrayList<>();
+
+        // 🔹 Découper le fichier en chunks
+        List<byte[]> chunks = fileChunker.getChunks(file);
         int chunkCount = 1; // Numéro du chunk pour affichage
+        int uniqueChunksStored = 0; // Nombre de nouveaux chunks ajoutés
+
         for (byte[] chunk : chunks) {
-            processChunk(chunk, chunkCount, chunkMapping, chunkSequence);
+            boolean isNewChunk = processChunk(chunk, chunkCount, chunkMapping, chunkSequence);
+            if (isNewChunk) {
+                uniqueChunksStored++;
+            }
             chunkCount++;
         }
 
         System.out.println("\n📊 Résumé du traitement :");
         System.out.println("✅ " + chunkSequence.size() + " chunks analysés.");
-        System.out.println("✅ " + chunkMapping.size() + " chunks uniques stockés.");
+        System.out.println("✅ " + uniqueChunksStored + " nouveaux chunks stockés (hors doublons).");
 
-        // Sauvegarde tous les chunks uniques
+        // 🔹 Sauvegarder tous les chunks dans `chunks.json` (mise à jour globale)
         JsonUtils.saveToJsonFile(chunkMapping, "chunks.json");
 
-        // Sauvegarde la séquence des chunks pour la reconstruction
+        // 🔹 Sauvegarder la séquence des chunks et l'extension dans `result.json`
         Map<String, Object> resultData = new HashMap<>();
         resultData.put("chunks", chunkSequence);
+        resultData.put("extension", extension); // Ajout de l'extension
+
         JsonUtils.saveToJsonFile(resultData, "result.json");
 
-        System.out.println("\n✅ Fichiers de sauvegarde générés :");
+        System.out.println("\n✅ Fichiers de sauvegarde mis à jour :");
         System.out.println("  📄 chunks.json  → Contient " + chunkMapping.size() + " chunks uniques.");
         System.out.println("  📄 result.json  → Contient la séquence des chunks pour la reconstruction.");
     }
 
-    private void processChunk(byte[] chunk, int chunkCount, Map<String, String> chunkMapping, List<String> chunkSequence) {
+    private boolean processChunk(byte[] chunk, int chunkCount, Map<String, String> chunkMapping, List<String> chunkSequence) {
         String chunkHash = Blake3Hasher.hashChunk(chunk);
-        String chunkData = new String(chunk); // Convertir le chunk en texte
+        String chunkData = Base64.getEncoder().encodeToString(chunk);
 
-        // Ajouter à la liste de séquence des chunks
-        chunkSequence.add(chunkHash);
+        boolean isNewChunk = false;
 
         System.out.println("\n📦 Chunk " + chunkCount);
         System.out.println("  ○ Hash   : " + chunkHash);
         System.out.println("  ○ Taille : " + chunk.length + " bytes");
 
-        // Vérifier si le chunk est déjà stocké
+        // 🔹 Vérifier si le chunk existe déjà dans `chunks.json`
         if (!chunkMapping.containsKey(chunkHash)) {
             chunkMapping.put(chunkHash, chunkData);
             byte[] compressedChunk = compressor.compressChunkWithZstd(chunk);
             chunkStorage.storeChunk(chunkHash, compressedChunk);
+            isNewChunk = true;
 
             System.out.println("  ⚡ Compression appliquée");
             System.out.println("  ⚡ Taille compressée : " + compressedChunk.length + " bytes");
         } else {
-            System.out.println("  🔁 Chunk déjà existant (doublon détecté) !");
+            System.out.println("  🔁 Chunk déjà existant (retrouvé dans chunks.json) !");
         }
 
+        chunkSequence.add(chunkHash);
         System.out.println("-----------------------------------------");
+
+        return isNewChunk;
     }
 
     public void compressChunksWithoutMessage(List<byte[]> chunks) {
