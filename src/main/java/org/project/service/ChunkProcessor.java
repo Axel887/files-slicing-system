@@ -1,22 +1,18 @@
 package org.project.service;
 
 import org.project.utils.JsonUtils;
-import org.project.storage.ChunkStorage;
-import com.github.luben.zstd.Zstd;
 import java.io.*;
 import java.util.*;
 
 public class ChunkProcessor {
     private final FileChunker fileChunker;
-    private final ChunkStorage chunkStorage;
     private final Set<String> existingChunks;
     private double timeSlicingFile;
     private double timeCompressionFile;
     private final Compressor compressor;
 
-    public ChunkProcessor(FileChunker fileChunker, ChunkStorage chunkStorage) {
+    public ChunkProcessor(FileChunker fileChunker) {
         this.fileChunker = fileChunker;
-        this.chunkStorage = chunkStorage;
         this.existingChunks = loadExistingChunks();
         this.compressor = new Compressor();
     }
@@ -55,6 +51,7 @@ public class ChunkProcessor {
 
         List<String> chunkSequence = new ArrayList<>();
         Map<String, Integer> compressedChunkSizes = new HashMap<>();
+        Map<String, String> compressedChunksData = new LinkedHashMap<>();
         int chunkCount = 1;
         int totalOriginalSize = 0;
         int totalCompressedSize = 0;
@@ -76,9 +73,11 @@ public class ChunkProcessor {
             totalOriginalChunkSize += chunkSize;
 
             File chunkFile = new File("chunks/" + chunkHash + ".zst");
+            byte[] compressedChunk;
+
             if (!chunkFile.exists()) {
                 // 🔹 Nouveau chunk → compression et stockage
-                byte[] compressedChunk = this.compressor.compressChunkWithZstd(chunk);
+                compressedChunk = this.compressor.compressChunkWithZstd(chunk);
                 totalCompressedSize += compressedChunk.length;
                 compressedChunkSizes.put(chunkHash, compressedChunk.length);
                 newChunksStored++;
@@ -89,6 +88,7 @@ public class ChunkProcessor {
                 }
 
                 existingChunks.add(chunkHash);
+
                 if (withMessage) {
                     System.out.println("\n📦 Chunk " + chunkCount + " [Nouveau]");
                     System.out.println("  ○ Hash   : " + chunkHash);
@@ -98,12 +98,18 @@ public class ChunkProcessor {
                 }
             } else {
                 duplicateChunks++;
+                compressedChunk = readFile(chunkFile); // Charger le chunk déjà existant
+
                 if (withMessage) {
                     System.out.println("\n📦 Chunk " + chunkCount + " [Déjà existant]");
                     System.out.println("  ○ Hash   : " + chunkHash);
                     System.out.println("  ○ Taille originale : " + chunk.length + " bytes");
+                    System.out.println("  ✅ Chunk déjà stocké, réutilisation.");
                 }
             }
+
+            // 🔹 Stocker TOUS les chunks compressés du fichier actuel
+            compressedChunksData.put(chunkHash, Base64.getEncoder().encodeToString(compressedChunk));
 
             chunkSequence.add(chunkHash);
             chunkCount++;
@@ -113,6 +119,9 @@ public class ChunkProcessor {
 
         double deduplicationRatio = ((double) duplicateChunks / (chunkSequence.isEmpty() ? 1 : chunkSequence.size())) * 100;
         double storageGain = ((double) (totalOriginalChunkSize - totalStoredChunkSize) / totalOriginalChunkSize) * 100;
+
+        // 🔹 Sauvegarder dans `compressed_chunks.json`
+        JsonUtils.saveToJsonFile(compressedChunksData, "compressed_chunks.json");
 
         if (withMessage) {
             File resultFile = new File("result.json");
@@ -136,6 +145,19 @@ public class ChunkProcessor {
 
             System.out.println("\n✅ Fichiers de sauvegarde mis à jour :");
             System.out.println("  📄 result.json  → Métadonnées de reconstruction enregistrées.");
+            System.out.println("  📄 compressed_chunks.json  → Données compressées du fichier actuel.");
+        }
+    }
+
+    private byte[] readFile(File file) throws IOException {
+        try (FileInputStream fis = new FileInputStream(file);
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            byte[] temp = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = fis.read(temp)) != -1) {
+                buffer.write(temp, 0, bytesRead);
+            }
+            return buffer.toByteArray();
         }
     }
 

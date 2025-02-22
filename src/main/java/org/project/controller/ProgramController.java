@@ -15,10 +15,9 @@ public class ProgramController {
     private final CompressionPerformanceTest performanceTest;
 
     public ProgramController() {
-        InMemoryChunkStorage storage = new InMemoryChunkStorage();
         FileChunker fileChunker = new FileChunker();
         this.scanner = new Scanner(System.in);
-        this.processor = new ChunkProcessor(fileChunker, storage);
+        this.processor = new ChunkProcessor(fileChunker);
         this.performanceTest = new CompressionPerformanceTest(processor);
     }
 
