@@ -8,11 +8,11 @@ import java.util.List;
 
 public class FileChunker {
 
-    // Paramètres de découpage
-    private static final int WINDOW_SIZE = 48; // Fenêtre d'analyse
-    private static final int MASK = 0xFFF; // Condition de découpe (empreinte & MASK == 0)
-    private static final int MIN_CHUNK_SIZE = 1024; // 1 Ko (taille minimale)
-    private static final int MAX_CHUNK_SIZE = 8192; // 8 Ko (taille maximale)
+    // ✅ Augmenter la taille des chunks pour mieux compresser
+    private static final int WINDOW_SIZE = 48; // Fenêtre d'analyse (augmente stabilité)
+    private static final int MASK = 0x3FFF; // Condition de découpe (empreinte & MASK == 0)
+    private static final int MIN_CHUNK_SIZE = 16 * 1024; // 16 Ko (min)
+    private static final int MAX_CHUNK_SIZE = 64 * 1024; // 64 Ko (max)
 
     public List<byte[]> getChunks(File file) throws IOException {
         Polynomial poly = Polynomial.createFromLong(0x3DA3358B4DC173L);

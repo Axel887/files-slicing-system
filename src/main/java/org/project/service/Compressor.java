@@ -26,7 +26,7 @@ public class Compressor {
      * Compression avec Zstd.
      */
     public byte[] compressChunkWithZstd(byte[] chunk) {
-        return Zstd.compress(chunk);
+        return Zstd.compress(chunk, 19);
     }
 
     /**

@@ -15,10 +15,9 @@ public class ProgramController {
     private final CompressionPerformanceTest performanceTest;
 
     public ProgramController() {
-        InMemoryChunkStorage storage = new InMemoryChunkStorage();
         FileChunker fileChunker = new FileChunker();
         this.scanner = new Scanner(System.in);
-        this.processor = new ChunkProcessor(storage, fileChunker);
+        this.processor = new ChunkProcessor(fileChunker);
         this.performanceTest = new CompressionPerformanceTest(processor);
     }
 
@@ -51,7 +50,7 @@ public class ProgramController {
         System.out.println("🏁 Début du découpage...\n");
 
         try {
-            processor.processFile(file);
+            processor.processFile(file, true);
             askTestPerformanceFile(file);
             System.out.println("\n✅ Découpage terminé avec succès !");
         } catch (IOException e) {

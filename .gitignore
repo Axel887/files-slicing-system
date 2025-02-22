@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+chunks/
+fichier_reconstruit.*
+result.json
+compressed_chunks.json

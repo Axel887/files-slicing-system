@@ -1,6 +1,6 @@
 package org.project.performance;
 
-import org.project.performance.utils.PerformanceUtils;
+import org.project.utils.PerformanceUtils;
 import org.project.service.ChunkProcessor;
 
 import java.io.IOException;
