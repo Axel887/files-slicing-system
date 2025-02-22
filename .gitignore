@@ -38,6 +38,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-chunks.json
+chunks/
 fichier_reconstruit.*
 result.json
